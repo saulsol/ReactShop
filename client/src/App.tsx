@@ -7,15 +7,18 @@ interface ProductType{
     price: number;
 }
 const App = () => {
-    const products: ProductType[] = [
+    const [products, setProducts] = useState<ProductType[]>([
         {
             id: 0,
             name: "제품",
             explanation: '해상도 지원',
             price: 1200
         },
-    ];
+    ]);
 
+    const [name, setName] = useState<string>('');
+    const [explanation, setExplanation] = useState<string>('');
+    const [price, setPrice] = useState<number>(0);
 
     const handleSubmit=(event : any, someValue: number)=>{
         event.preventDefault();
