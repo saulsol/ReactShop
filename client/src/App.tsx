@@ -20,20 +20,22 @@ const App = () => {
     const [explanation, setExplanation] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
 
-    const handleSubmit=(event : any, someValue: number)=>{
+    const handleSubmit=(event : any)=>{
         event.preventDefault();
         console.log(event.type)
-        console.log(someValue);
+        console.log(name, explanation, price);
     }
 
-    const someValue = 10;
+
 
   return (
       <>
-          <form onSubmit={(e)=>handleSubmit(e,someValue)}>
-              <input type={"text"} placeholder={"상품이름"} />
-              <input type={"text"} placeholder={"상품설명"}/>
-              <input type={"number"} placeholder={"상품가격"}></input>
+          <form onSubmit={(e)=>handleSubmit(e)}>
+              <input onChange={(event)=>(setName(event.target.value))} type={"text"} placeholder={"상품이름"} />
+              <input onChange={(event) => (setExplanation(event.target.value))} type={"text"} placeholder={"상품설명"}/>
+              <input onChange={
+                  (event) => (setPrice(parseInt(event.target.value, 10)))
+              } type={"number"} placeholder={"상품가격"}></input>
               <input type={"submit"} placeholder={"상품만들기"}/>
           </form>
 
