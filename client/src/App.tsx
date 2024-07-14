@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 
 interface ProductType{
     id: number;
@@ -19,18 +19,23 @@ const App = () => {
     const [name, setName] = useState<string>('');
     const [explanation, setExplanation] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
-
-    const handleSubmit=(event : any)=>{
-        event.preventDefault();
-        console.log(event.type)
-        console.log(name, explanation, price);
-    }
+    const fakeId = useRef(0);
+    const handleCreate=(newProduct: Omit<ProductType, 'id'>)=>{
+        fakeId.current += 1;
+        setProducts([...products, {
+            ...newProduct,
+            id: fakeId.current,
+        }]);
+    };
 
 
 
   return (
       <>
-          <form onSubmit={(e)=>handleSubmit(e)}>
+          <form onSubmit={(event) => {
+                event.preventDefault();
+                handleCreate({name,explanation,price});
+          }}>
               <input onChange={(event)=>(setName(event.target.value))} type={"text"} placeholder={"상품이름"} />
               <input onChange={(event) => (setExplanation(event.target.value))} type={"text"} placeholder={"상품설명"}/>
               <input onChange={
