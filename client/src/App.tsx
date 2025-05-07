@@ -6,6 +6,30 @@ interface ProductType{
     explanation: string,
     price: number;
 }
+
+interface ProductItemProps{
+    product: ProductType
+}
+
+const ProductItem = ({product} : ProductItemProps) => {
+    const {id, name, price, explanation} = product;
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    return (
+        <div>
+            <div>{id}</div>
+            <div>{name}</div>
+            <div>{price}</div>
+            <div>{explanation}</div>
+            
+            <button type={"button"} onClick={() => console.log("삭제하기")}>삭제하기</button>
+            <button type={"button"} onClick={() => console.log("수정하기")}>수정하기</button>
+            
+        </div>
+    );
+}
+
+
 const App = () => {
     const [products, setProducts] = useState<ProductType[]>([
         {
@@ -44,15 +68,15 @@ const App = () => {
               <input type={"submit"} placeholder={"상품만들기"}/>
           </form>
 
-        {products.map((product)=>(
-                <div key={product.id}>
-                    <div>{product.id}</div>
-                    <div>{product.name}</div>
-                    <div>{product.price}</div>
-                    <div>{product.explanation}</div>
-                </div>
-            )
-        )}
+
+
+          {products.map((product) => (
+              <ProductItem key={product.id} product={product} />
+          ))}
+
+
+
+
       </>
   );
 }
