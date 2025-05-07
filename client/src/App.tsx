@@ -8,10 +8,11 @@ interface ProductType{
 }
 
 interface ProductItemProps{
-    product: ProductType
+    product: ProductType;
+    onDelete: (id: number)=> void;
 }
 
-const ProductItem = ({product} : ProductItemProps) => {
+const ProductItem = ({product, onDelete} : ProductItemProps) => {
     const {id, name, price, explanation} = product;
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -22,7 +23,7 @@ const ProductItem = ({product} : ProductItemProps) => {
             <div>{price}</div>
             <div>{explanation}</div>
             
-            <button type={"button"} onClick={() => console.log("삭제하기")}>삭제하기</button>
+            <button type={"button"} onClick={() => onDelete(id)}>삭제하기</button>
             <button type={"button"} onClick={() => console.log("수정하기")}>수정하기</button>
             
         </div>
@@ -52,6 +53,7 @@ const App = () => {
         }]);
     };
 
+    const handleDelete = (id: number) => setProducts(products.filter((product) => product.id !== id));
 
 
   return (
@@ -71,7 +73,7 @@ const App = () => {
 
 
           {products.map((product) => (
-              <ProductItem key={product.id} product={product} />
+              <ProductItem key={product.id} product={product} onDelete={handleDelete} />
           ))}
 
 
