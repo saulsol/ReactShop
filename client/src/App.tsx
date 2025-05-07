@@ -10,9 +10,10 @@ interface ProductType{
 interface ProductItemProps{
     product: ProductType;
     onDelete: (id: number)=> void;
+    onUpdate: (id: number) => void;
 }
 
-const ProductItem = ({product, onDelete} : ProductItemProps) => {
+const ProductItem = ({product, onDelete, onUpdate} : ProductItemProps) => {
     const {id, name, price, explanation} = product;
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -24,8 +25,26 @@ const ProductItem = ({product, onDelete} : ProductItemProps) => {
             <div>{explanation}</div>
             
             <button type={"button"} onClick={() => onDelete(id)}>삭제하기</button>
-            <button type={"button"} onClick={() => console.log("수정하기")}>수정하기</button>
-            
+            <button type={"button"} onClick={() => setIsEditMode((prev) => !prev)}>수정하기</button>
+
+            {
+                isEditMode && (
+                    <form
+                        onSubmit={(event) =>
+                        {
+                            event.preventDefault();
+                            onUpdate(id);
+                        }}
+                    >
+                        <input type={"text"} placeholder= "상품 이름"/>
+                        <input type={"text"} placeholder= "상품 설정"/>
+                        <input type={"number"} placeholder= "상품 가격"/>
+                        <input type={"submit"} placeholder= "상품 수정하기"/>
+                    </form>
+                )
+            }
+
+
         </div>
     );
 }
@@ -55,6 +74,17 @@ const App = () => {
 
     const handleDelete = (id: number) => setProducts(products.filter((product) => product.id !== id));
 
+    const handleUpdate = (id: number) => {
+        const updateProduct = {
+            id,
+            name: "수정된 상품",
+            explanation: "수정된 상품",
+            price: 0
+        }
+        setProducts(
+            products.map((product) => (product.id === id ? updateProduct : product))
+        );
+    };
 
   return (
       <>
@@ -71,13 +101,10 @@ const App = () => {
           </form>
 
 
-
           {products.map((product) => (
-              <ProductItem key={product.id} product={product} onDelete={handleDelete} />
+              <ProductItem key={product.id} product={product}
+                           onDelete={handleDelete} onUpdate={handleUpdate}  />
           ))}
-
-
-
 
       </>
   );
